@@ -6,7 +6,15 @@
 #define M_PI 3.14159265358979323846
 #define RADIUS 6371000 // radius of earth in meters
 
+double dist_long, dist_latt; // dist_point
+double latt, longt;			 // current point
+uint8_t GPRMC_message = 0;
+char lat[30] = "";
+char lon[30] = "";
+
+
 void portF_init(void);
+void gps_read(void);
 double to_radians(double degrees);
 double distance(double lat1, double lon1, double lat2, double lon2);
 void Uart5_init(void);
@@ -14,6 +22,10 @@ void uart5_send_byte(uint8_t c);
 void Uart5_output_string(char* pt);
 
 int main(void){
+	double tot_dis = 0;
+	double last_latt = -1;
+	double last_lon = -1;
+	char charray[30];
 	portF_init();
 	while(1){
 		
@@ -30,6 +42,64 @@ void portF_init(void){
 	GPIO_PORTF_PCTL_R = 0x00000000;			// GPIO clear bit PCTL
 	GPIO_PORTF_DEN_R = 0x0E;				// Enable digital pins PF1-PF3
 	GPIO_PORTF_AMSEL_R = 0x00;				// Disable analog function
+}
+
+void gps_read(void)
+{
+	int comma_nums = 0;
+	char data;
+	int idx = 0;
+
+	char arr[10] = "$GPRMC";  
+	int lat_i = 0;
+	int long_i = 0;
+	
+
+	while(1)
+	{
+		data = uart2_read_byte();
+		if(!GPRMC_message)  	// make sure it's a $GPRMC message
+		{
+			if(arr[idx]!= data)
+			{
+				
+				 while(data!='\n')
+					data = uart2_read_byte();
+				
+				return;
+			}
+			if(arr[idx]=='C')
+			  	GPRMC_message = 1;
+			
+			idx++;
+		}
+		
+		if(data == ',')
+			comma_nums++;
+		else if(comma_nums==2)
+		{
+			if(data == 'V')
+			{			 
+				     GPRMC_message = 0;
+			       return;
+			}
+		}
+		else if(comma_nums==3) // lattide
+		{
+			lat[lat_i] = data;
+			lat_i++;
+		}
+		else if(comma_nums==5) // longtiude
+		{
+			lon[long_i] = data;
+			long_i++;
+		}
+		
+		if(data == '\n')
+			break;
+		
+  }
+	
 }
 
 double parse_degree(char *degree_str)
