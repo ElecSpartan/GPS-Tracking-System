@@ -1,6 +1,9 @@
 #include "tm4c123gh6pm.h"
 #include "uart.h"
+#include <math.h>
 
+#define M_PI 3.14159265358979323846
+#define RADIUS 6371000 // radius of earth in meters
 
 double dist_long, dist_latt; // dist_point
 double latt, longt;			 // current point
@@ -122,4 +125,15 @@ void Uart5_output_string(char* pt){
 		uart5_send_byte(*pt);
 		pt++;
 	}
+}
+double to_radians(double degrees) {
+    return degrees * M_PI / 180.0;
+}
+
+double distance(double lat1, double lon1, double lat2, double lon2) {
+    double dlat = to_radians(lat2 - lat1);
+    double dlon = to_radians(lon2 - lon1);
+    double a = pow(sin(dlat / 2), 2) + cos(to_radians(lat1)) * cos(to_radians(lat2)) * pow(sin(dlon / 2), 2);
+    double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+    return RADIUS * c;
 }
