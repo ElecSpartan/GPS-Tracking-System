@@ -12,7 +12,7 @@ We also used UART5 with Bluetooth configurations to show the total traveled dist
 Using the texas instruments TM4C123GH6PM ARM Cortex-M4 microcontroller, we are required to write the embedded C program with the required drivers to:
 1. Get the GPS data using UART protocol.
 2. Control the built-in RGB led based on these criterias:
-   - If distance from target < 10 m -> Turn `Red` led on.
+   - If distance from target > 10 m -> Turn `Red` led on.
    - If distance from target <= 5 m -> Turn `Yellow` led on.
    - If distance from target ~ 0 m -> Turn `Green` led on.
 3. When the destination is reached, the total distance should be printed and it must be within 5% range of error.
