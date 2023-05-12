@@ -17,7 +17,8 @@ void gps_read(void);
 void Uart5_init(void);
 void uart5_send_byte(uint8_t c);
 void Uart5_output_string(char* pt);
-
+double to_radians(double degrees);
+double distance(double lat1, double lon1, double lat2, double lon2);
 
 int main(void){
 	double tot_dis = 0;
