@@ -15,4 +15,8 @@ void uart2_send_byte(uint8_t c);
 
 uint8_t uart2_read_byte(void);
 
+void SYSTICKTIMER_init(void);
+void SYSTICK_wait1ms(void);
+void delayMillis(uint32_t delay);
+
 #endif
