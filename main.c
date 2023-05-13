@@ -17,6 +17,7 @@ void gps_read(void);
 void Uart5_init(void);
 void uart5_send_byte(uint8_t c);
 void Uart5_output_string(char* pt);
+double parse_degree(char *degree_str);
 double to_radians(double degrees);
 double distance(double lat1, double lon1, double lat2, double lon2);
 
@@ -127,6 +128,15 @@ void Uart5_output_string(char* pt){
 		pt++;
 	}
 }
+
+double parse_degree(char *degree_str){
+    float raw_degree = atof(degree_str);
+      int dd = (int) (raw_degree / 100);
+    double ss = raw_degree - (dd * 100);
+    double degree = dd + (ss / 60);
+    return degree;
+}
+
 double to_radians(double degrees) {
     return degrees * M_PI / 180.0;
 }
