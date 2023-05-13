@@ -39,6 +39,4 @@ uint8_t switch1(void);
 
 uint8_t switch2(void);
 
-void LED_RGB(uint8_t colour);
-
 #endif
