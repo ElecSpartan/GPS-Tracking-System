@@ -1,6 +1,8 @@
-#include "tm4c123gh6pm.h"
+#include <string.h>
+#include "led.h"
 #include "uart.h"
 #include <math.h>
+#include <stdlib.h>
 
 #define M_PI 3.14159265358979323846
 #define RADIUS 6371000 // radius of earth in meters
@@ -55,6 +57,12 @@ int main(void){
 
 		last_latt = latt;
 		last_lon = longt;
+		
+		sprintf(charray, "%2.6f", tot_dis);
+        	Uart5_output_string(charray);
+        	Uart5_output_string("\n");
+        	GPRMC_message = 0;
+		
 	}
 }
 
