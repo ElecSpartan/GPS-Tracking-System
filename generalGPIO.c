@@ -140,8 +140,3 @@ uint8_t switch1(void){
 uint8_t switch2(void){
     return (GPIO_PORTF_DATA_R & SW2);
 }
-
-void LED_RGB(uint8_t colour){
-    GPIO_PORTF_DATA_R &= ~RGB;			// Stop all active LEDs
-    GPIO_PORTF_DATA_R |= colour;			// Turn on this led
-}
