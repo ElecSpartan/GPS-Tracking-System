@@ -26,9 +26,35 @@ int main(void){
 	double last_latt = -1;
 	double last_lon = -1;
 	char charray[30];
+	SYSTICKTIMER_init();
 	portF_init();
+	Uart5_init();
+	uart2_init(16000000, 9600);
+
+	RGB_set(0x2);
+	delayMillis(3000);
+	RGB(0X00);
+	delayMillis(1000 * 15);
+	RGB(0x0E);
+	delayMillis(3000);
+	RGB(0X00);
+
 	while(1){
-		
+		double dis;
+		while (!GPRMC_message){
+			gps_read();
+		}
+		latt = parse_degree(lat);
+		longt = parse_degree(lon);
+
+		dis = distance(latt, longt, dist_latt, dist_long);
+		if (last_latt != -1)
+			tot_dis += distance(latt, longt, last_latt, last_lon);
+
+		distance_indicator(dis);
+
+		last_latt = latt;
+		last_lon = longt;
 	}
 }
 
